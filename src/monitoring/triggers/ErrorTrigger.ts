@@ -18,7 +18,10 @@ export class ErrorTrigger extends AbstractTrigger {
         ];
     }
 
-    public isTriggered(queryResults: Record<string, unknown>): boolean {
-        return (queryResults.counter as number) > 0;
+    public isTriggered(queryResults: {
+        total: { value: number };
+        hits: unknown[];
+    }): boolean {
+        return queryResults?.total?.value > 0;
     }
 }

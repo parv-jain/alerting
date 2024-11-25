@@ -16,7 +16,10 @@ export class ErrorAlertAction extends AbstractAction {
         this.destination = new Slack(props.logger);
     }
 
-    execute(queryResults: Record<string, unknown>): Promise<boolean> {
-        return this.destination.sendMessage(this.message, { ...queryResults });
+    execute(queryResults: {
+        total: { value: number };
+        hits: unknown[];
+    }): Promise<boolean> {
+        return this.destination.sendMessage(this.message, queryResults);
     }
 }

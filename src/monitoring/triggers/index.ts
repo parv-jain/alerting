@@ -1,1 +1,3 @@
-export * from './ErrorTrigger';
+import { ErrorTrigger } from './ErrorTrigger';
+
+export { ErrorTrigger };
