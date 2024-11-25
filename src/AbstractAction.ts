@@ -5,7 +5,7 @@ export default abstract class AbstractAction {
     abstract message: string;
     abstract destination: IDestination;
 
-    execute(options?: any): Promise<boolean> {
+    execute(options?: unknown): Promise<boolean> {
         return this.destination.sendMessage(this.message, options);
     }
 }

@@ -1,7 +1,7 @@
 export enum DestinationType {
     STD_OUT = 'STD_OUT',
     SLACK = 'SLACK',
-    EMAIL = 'EMAIL'
+    EMAIL = 'EMAIL',
 }
 
 /**
@@ -11,5 +11,5 @@ export enum DestinationType {
 export default interface IDestination {
     name: string;
     type: DestinationType;
-    sendMessage(message: string, params?: any): Promise<boolean>;
+    sendMessage(message: string, params?: unknown): Promise<boolean>;
 }
