@@ -30,9 +30,6 @@ export class ErrorMonitor extends AbstractAlertMonitor {
         this.checkFrequency = 60 * 1000; // every minute
         this.refreshMetricsFrequency = 60 * 60 * 1000; // every one hour
     }
-    async run() {
-        console.log('ErrorMonitor');
-    }
 
     public refreshMetrics(): void {
         // handled at time of runQuery itself
