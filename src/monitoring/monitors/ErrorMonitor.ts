@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import Logger from 'bunyan';
 import { config } from '../../config';
-import { AbstractAlertMonitor, AbstractTrigger, Logging } from '../../toolbox';
+import { AbstractAlertMonitor, AbstractTrigger } from '../../toolbox';
 import { ErrorTrigger } from '..';
 
 export class ErrorMonitor extends AbstractAlertMonitor {
@@ -16,28 +16,28 @@ export class ErrorMonitor extends AbstractAlertMonitor {
 
     public logger: Logger;
 
-    constructor() {
+    constructor(props: { logger: Logger }) {
         super();
         this.name = this.constructor.name;
-        this.logger = new Logging({
-            name: this.name,
-            tags: config.errormonitor.tags,
-        }).createLogger();
+        this.logger = props.logger;
         this.triggers = [
             new ErrorTrigger({
                 logger: this.logger,
-                message: `[${this.name}] Triggered`,
+                message: `Alert! - [${this.name}] - You've got a non-zero errors`,
             }),
         ];
-        this.checkFrequency = 10 * 1000; // every minute
+        this.checkFrequency = 5 * 60 * 1000; // every 5 minutes
         this.refreshMetricsFrequency = 60 * 60 * 1000; // every one hour
     }
 
     public refreshMetrics(): void {
-        // handled at time of runQuery itself
+        // Not needed for this monitor
     }
 
     public async runQuery(): Promise<unknown> {
+        this.logger.info(
+            `${[this.constructor.name]} - Running query to fetch error logs from elasticsearch`,
+        );
         const metrics = await this.queryElasticsearch();
         return new Promise((resolve) => resolve(metrics.hits));
     }
@@ -69,6 +69,11 @@ export class ErrorMonitor extends AbstractAlertMonitor {
                                 },
                             },
                         },
+                        {
+                            match_phrase: {
+                                'log.level.keyword': 'ERROR',
+                            },
+                        },
                     ],
                     should: [],
                     must_not: [],
@@ -82,7 +87,7 @@ export class ErrorMonitor extends AbstractAlertMonitor {
             });
             return response.data;
         } catch (err) {
-            this.logger.error(err, 'Error querying Elasticsearch');
+            this.logger.error(err, 'Error querying elasticsearch via kibana');
         }
     };
 }

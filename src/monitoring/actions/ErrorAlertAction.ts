@@ -9,9 +9,12 @@ export class ErrorAlertAction extends AbstractAction {
 
     public destination: IDestination;
 
+    private logger: Logger;
+
     constructor(props: { logger: Logger; message: string }) {
         super();
         this.name = this.constructor.name;
+        this.logger = props.logger;
         this.message = props.message;
         this.destination = new Slack(props.logger);
     }
@@ -20,6 +23,7 @@ export class ErrorAlertAction extends AbstractAction {
         total: { value: number };
         hits: unknown[];
     }): Promise<boolean> {
+        this.logger.info(`${this.name} - Triggered. Sending message to slack`);
         return this.destination.sendMessage(this.message, queryResults);
     }
 }
