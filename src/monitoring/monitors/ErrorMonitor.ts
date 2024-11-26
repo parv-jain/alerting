@@ -26,7 +26,7 @@ export class ErrorMonitor extends AbstractAlertMonitor {
                 message: `Alert! - [${this.name}] - You've got a non-zero errors`,
             }),
         ];
-        this.checkFrequency = 1 * 10 * 1000; // every 5 minutes
+        this.checkFrequency = 5 * 60 * 1000; // every 5 minutes
         this.refreshMetricsFrequency = 60 * 60 * 1000; // every one hour
     }
 
