@@ -7,7 +7,7 @@ const logger = new Logging({
     tags: config.errormonitor.tags,
 }).createLogger();
 
-const erroMonitoInstance = new ErrorMonitor({ logger });
-erroMonitoInstance.startMonitoring();
+const errorMonitoInstance = new ErrorMonitor({ logger });
+errorMonitoInstance.startMonitoring();
 
 logger.info('Alerting and Monitoring service started');
