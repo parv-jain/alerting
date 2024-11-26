@@ -27,15 +27,17 @@ export class Slack implements IDestination {
     ): Promise<boolean> {
         try {
             const keysToInclude = [
+                'log.msg',
                 'kubernetes.container.name',
                 'kubernetes.namespace',
-                'log.msg',
-                'log.level',
-                'tags',
             ];
 
             const totalErrors = queryResults.hits.length;
 
+            const timestamps = queryResults.hits.map(hit => new Date(hit._source['@timestamp']).getTime());
+            const minTime = new Date(Math.min(...timestamps)).toISOString();
+            const maxTime = new Date(Math.max(...timestamps)).toISOString();
+        
             const formattedResults = queryResults.hits
                 .slice(0, 5)
                 .map((hit, index) => {
@@ -59,8 +61,8 @@ export class Slack implements IDestination {
                 .join('\n\n');
 
             const kibanaQueryParams = new URLSearchParams({
-                _g: `(filters:!(),refreshInterval:(pause:!t,value:60000),time:(from:now-5m,to:now))`,
-                _a: `(columns:!(kubernetes.container.name,kubernetes.namespace,log.msg,tags,log.level),dataSource:(dataViewId:bf4b853a-572f-42bc-bc24-8f39c9fa23fd,type:dataView),filters:!(('$state':(store:appState),meta:(alias:!n,disabled:!f,index:fcada783-8d08-4b06-9c59-a5c238162521,key:log.level.keyword,negate:!f,params:(query:ERROR),type:phrase),query:(match_phrase:(log.level.keyword:ERROR)))),index:fcada783-8d08-4b06-9c59-a5c238162521,interval:auto,query:(language:kuery,query:''),sort:!(!('@timestamp',desc)))`,
+                _g: `(filters:!(),refreshInterval:(pause:!t,value:60000),time:(from:'${minTime}',to:'${maxTime}'))`,
+                _a: `(columns:!(log.msg,kubernetes.container.name,kubernetes.namespace),dataSource:(dataViewId:bf4b853a-572f-42bc-bc24-8f39c9fa23fd,type:dataView),filters:!(('$state':(store:appState),meta:(alias:!n,disabled:!f,index:fcada783-8d08-4b06-9c59-a5c238162521,key:log.level.keyword,negate:!f,params:(query:ERROR),type:phrase),query:(match_phrase:(log.level.keyword:ERROR)))),index:fcada783-8d08-4b06-9c59-a5c238162521,interval:auto,query:(language:kuery,query:''),sort:!(!('@timestamp',desc)))`,
             }).toString();
 
             const kibanaLink = `${config.kibana.url}${config.kibana.discoverPath}?${kibanaQueryParams}`;

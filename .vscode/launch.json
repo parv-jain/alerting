@@ -6,9 +6,9 @@
     "configurations": [
         {
             "type": "node-terminal",
-            "name": "Run Script: start:alerting",
+            "name": "Run Script: start",
             "request": "launch",
-            "command": "npm run start:alerting",
+            "command": "npm run start",
             "cwd": "${workspaceFolder}"
         },
     ]

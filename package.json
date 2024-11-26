@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start:alerting": "nodemon src/index.ts",
+    "start": "nodemon src/index.ts",
     "build": "tsc -p .",
     "lint": "eslint 'src/**/*.{js,ts}'",
     "format": "prettier --write 'src/**/*.{js,ts}'"
@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "axios": "^1.7.7",
-    "bunyan": "^1.8.15"
+    "bunyan": "^1.8.15",
+    "dotenv": "^16.4.5"
   }
 }

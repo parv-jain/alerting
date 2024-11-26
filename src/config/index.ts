@@ -1,17 +1,20 @@
+import dotenv from 'dotenv';
+
+// Load environment variables from .env file
+dotenv.config();
+
 export const config = {
     errormonitor: {
-        tags: ['second-brain-server', 'error-monitor'],
+        tags: process.env.ERROR_MONITOR_TAGS?.split(',') || ['default-tag'],
     },
     kibana: {
-        url: 'https://kibana.second-brain.in',
-        username: 'elastic',
-        password: '5pg4fWCU8MmaLpSF',
-        devToolsProxyPath:
-            '/api/console/proxy?path=logstash-*%2F_search&method=GET',
-        discoverPath: '/app/discover#/',
+        url: process.env.KIBANA_URL || '',
+        username: process.env.KIBANA_USERNAME || '',
+        password: process.env.KIBANA_PASSWORD || '',
+        devToolsProxyPath: process.env.KIBANA_DEV_TOOLS_PROXY_PATH || '',
+        discoverPath: process.env.KIBANA_DISCOVER_PATH || '',
     },
     slack: {
-        webhookUrl:
-            'https://hooks.slack.com/services/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',
+        webhookUrl: process.env.SLACK_WEBHOOK_URL || '',
     },
 };
