@@ -54,3 +54,27 @@ Run the application:
 ```
 npm run start
 ```
+
+## Deployment on Kubernetes
+
+```
+cd alerting
+```
+
+Build Image
+
+```
+docker build -t alerting:latest .
+```
+
+Update app-config.yaml with actual env values
+
+Deploy config map
+```
+kubectl apply -f app-config.yaml -n your_namespace
+```
+
+Deploy app as container
+```
+kubectl apply -f deployment.yaml -n your_namespace
+```
