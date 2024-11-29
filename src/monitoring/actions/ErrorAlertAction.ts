@@ -23,7 +23,6 @@ export class ErrorAlertAction extends AbstractAction {
         total: { value: number };
         hits: unknown[];
     }): Promise<boolean> {
-        this.logger.info(`${this.name} - Triggered. Sending message to slack`);
         return this.destination.sendMessage(this.message, queryResults);
     }
 }

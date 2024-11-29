@@ -35,9 +35,6 @@ export class ErrorMonitor extends AbstractAlertMonitor {
     }
 
     public async runQuery(): Promise<unknown> {
-        this.logger.info(
-            `${[this.constructor.name]} - Running query to fetch error logs from elasticsearch`,
-        );
         const metrics = await this.queryElasticsearch();
         return new Promise((resolve) => resolve(metrics.hits));
     }
