@@ -23,7 +23,7 @@ export class ErrorMonitor extends AbstractAlertMonitor {
         this.triggers = [
             new ErrorTrigger({
                 logger: this.logger,
-                message: `Alert! - [${this.name}] - You've got a non-zero errors`,
+                message: `[${this.name}] - You've got non-zero errors`,
             }),
         ];
         this.checkFrequency = 5 * 60 * 1000; // every 5 minutes
@@ -71,7 +71,7 @@ export class ErrorMonitor extends AbstractAlertMonitor {
                         },
                         {
                             match_phrase: {
-                                'log.level.keyword': 'ERROR',
+                                'log.level': 'ERROR',
                             },
                         },
                     ],
@@ -79,6 +79,7 @@ export class ErrorMonitor extends AbstractAlertMonitor {
                     must_not: [],
                 },
             },
+            size: 1,
         };
 
         try {

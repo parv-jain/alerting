@@ -29,14 +29,14 @@ export class Slack implements IDestination {
             const keysToInclude = [
                 'log.msg',
                 'kubernetes.container.name',
-                'kubernetes.namespace',
+                'log.response.status_code',
             ];
 
             const totalErrors = queryResults.hits.length;
 
             const timestamps = queryResults.hits.map(hit => new Date(hit._source['@timestamp']).getTime());
-            const minTime = new Date(Math.min(...timestamps)).toISOString();
-            const maxTime = new Date(Math.max(...timestamps)).toISOString();
+            const minTime = new Date(Math.min(...timestamps) - 10000).toISOString();
+            const maxTime = new Date(Math.max(...timestamps) + 10000).toISOString();
         
             const formattedResults = queryResults.hits
                 .slice(0, 5)
