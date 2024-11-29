@@ -61,10 +61,16 @@ npm run start
 cd alerting
 ```
 
-Build Image
+### Build Image
 
 ```
-docker build -t alerting:latest .
+sudo docker build -t second-brain/alerting .
+```
+
+### Push Image to ECR
+```
+sudo docker tag second-brain/alerting:latest 471112675652.dkr.ecr.ap-south-1.amazonaws.com/second-brain/alerting:latest
+sudo docker push 471112675652.dkr.ecr.ap-south-1.amazonaws.com/second-brain/alerting:latest
 ```
 
 Update app-config.yaml with actual env values

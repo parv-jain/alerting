@@ -23,7 +23,7 @@ export class ErrorMonitor extends AbstractAlertMonitor {
         this.triggers = [
             new ErrorTrigger({
                 logger: this.logger,
-                message: `Alert! - [${this.name}] - You've got a non-zero errors`,
+                message: `[${this.name}] - You've got non-zero errors`,
             }),
         ];
         this.checkFrequency = 5 * 60 * 1000; // every 5 minutes
@@ -35,9 +35,6 @@ export class ErrorMonitor extends AbstractAlertMonitor {
     }
 
     public async runQuery(): Promise<unknown> {
-        this.logger.info(
-            `${[this.constructor.name]} - Running query to fetch error logs from elasticsearch`,
-        );
         const metrics = await this.queryElasticsearch();
         return new Promise((resolve) => resolve(metrics.hits));
     }
@@ -71,7 +68,7 @@ export class ErrorMonitor extends AbstractAlertMonitor {
                         },
                         {
                             match_phrase: {
-                                'log.level.keyword': 'ERROR',
+                                'log.level': 'ERROR',
                             },
                         },
                     ],
@@ -79,6 +76,7 @@ export class ErrorMonitor extends AbstractAlertMonitor {
                     must_not: [],
                 },
             },
+            size: 1,
         };
 
         try {
