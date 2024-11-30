@@ -73,14 +73,14 @@ sudo docker tag second-brain/alerting:latest 471112675652.dkr.ecr.ap-south-1.ama
 sudo docker push 471112675652.dkr.ecr.ap-south-1.amazonaws.com/second-brain/alerting:latest
 ```
 
-Update app-config.yaml with actual env values
+### Update app-config.yaml with actual env values
 
-Deploy config map
+### Deploy config map
 ```
 kubectl apply -f app-config.yaml -n your_namespace
 ```
 
-Deploy app as container
+### Deploy app as container
 ```
 kubectl apply -f deployment.yaml -n your_namespace
 ```
